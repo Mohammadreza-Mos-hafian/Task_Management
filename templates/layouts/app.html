@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{{ config["app_name"] }} | {% block title %}{% endblock %}</title>
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/icons8-microsoft-todo-2019-32.png') }}"
+          type="image/x-icon">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
+    {% block link %}{% endblock %}
+</head>
+<body>
+
+{% include 'layouts/header.html' %}
+
+{% block content %}
+{% endblock %}
+
+{% include 'layouts/footer.html' %}
+
+<script src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
