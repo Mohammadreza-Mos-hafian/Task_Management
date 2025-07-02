@@ -1,12 +1,14 @@
-from flask import Flask
+from flask import render_template
 
-app = Flask(__name__)
+from app import creat_app
 
-
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+app = creat_app()
 
 
-if __name__ == '__main__':
+@app.route("/", endpoint="main_page")
+def index():
+    return render_template("index.html")
+
+
+if __name__ == "__main__":
     app.run()
