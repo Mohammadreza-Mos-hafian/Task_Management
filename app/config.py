@@ -36,6 +36,14 @@ def create_app():
     app.config["APP_NAME"] = os.getenv("APP_NAME")
     app.config["DATABASE"] = f"{os.getenv('DATABASE_URL').strip()}/{os.getenv('DATABASE_NAME').strip()}"
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+
+    app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER").strip()
+    app.config['MAIL_PORT'] = int(os.getenv("mail_port").strip())
+    app.config['MAIL_USE_TLS'] = os.getenv("MAIL_USE_TLS") == "True"
+    app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME").strip()
+    app.config['MAIL_PASSWORD'] = os.getenv("mail_password").strip()
+    app.config['MAIL_DEFAULT_SENDER'] = os.getenv("mail_default_sender").strip()
+
     app.config["DEBUG"] = os.getenv("DEBUG") == "True"
 
     app.register_blueprint(auth_bp)

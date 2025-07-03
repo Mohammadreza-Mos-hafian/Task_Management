@@ -4,6 +4,7 @@ from flask.views import MethodView
 from app.forms import RegisterForm
 from app.services import RegisterServiceLayer
 from app.database import session_scope
+from app.helpers import send_welcome_email
 
 
 class RegisterView(MethodView):
@@ -25,6 +26,8 @@ class RegisterView(MethodView):
                 email=form.email.data,
                 password=form.password.data
             )
+
+            send_welcome_email(form.email.data)
 
             return redirect(url_for("auth.login_view"))
 
