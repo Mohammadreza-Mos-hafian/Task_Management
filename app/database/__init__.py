@@ -1,1 +1,1 @@
-from .db import Base, session_scope
+from .db import Base, session_scope, engine

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import List, Optional, Type
+
+from flask_login import UserMixin
 
 from sqlalchemy import (
     Boolean, String, DateTime, Identity, Integer,
@@ -8,14 +10,14 @@ from sqlalchemy import (
     text
 )
 from sqlalchemy.sql import func
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 
-from app.database import Base
+from app.database import Base, engine
 
 from datetime import datetime
 
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = 'users'
     __table_args__ = (
         PrimaryKeyConstraint('id', name='users_pkey'),
@@ -37,3 +39,13 @@ class User(Base):
     deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
 
     tasks: Mapped[List['Task']] = relationship('Task', back_populates='user')
+
+    @staticmethod
+    def load_user(user_id: str) -> Type[User] | None:
+        with Session(engine) as session:
+            user = session.get(User, int(user_id))
+
+            if user:
+                return user
+
+        return None
