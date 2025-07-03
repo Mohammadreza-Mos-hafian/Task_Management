@@ -3,7 +3,7 @@
         <div class="container justify-content-between">
             <h4 class="app_name text-white">
                 {% if current_user.is_authenticated %}
-                    <a href="#"
+                    <a href="{{ url_for("dashboard.view") }}"
                        class="text-decoration-none text-white">{{ config["APP_NAME"] }}</a>
                 {% else %}
                     <a href="{{ url_for("main_page") }}"
