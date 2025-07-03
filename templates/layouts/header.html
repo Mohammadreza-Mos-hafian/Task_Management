@@ -13,7 +13,7 @@
 
             {% if current_user.is_authenticated %}
                 <div class="d-flex align-items-center justify-content-center gap-2">
-                    <span class="text-white fs-6 fw-semibold">{{ current_user.first_name }} {{ current_user.last_name }}</span>
+                    <span class="text-white fs-6">{{ current_user.first_name }} {{ current_user.last_name }}</span>
 
                     <a href="{{ url_for("auth.logout") }}" class="btn text-bg-danger btn-sm">
                         <img src="{{ url_for("static", filename="icons/turn_off.svg") }}" alt="Turn off" title="Logout">
