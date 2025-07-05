@@ -10,11 +10,11 @@
 
         <div class="row mt-4 d-flex justify-content-center">
             <div class="col-md-4">
-                <a href="#" class="btn btn-success w-100">Create Task</a>
+                <a href="{{ url_for("task.create_view") }}" class="btn btn-success w-100">Create Task</a>
             </div>
 
             <div class="col-md-4">
-                <a href="#" class="btn btn-primary w-100">Show Tasks</a>
+                <a href="{{ url_for("task.index_view") }}" class="btn btn-primary w-100">Show Tasks</a>
             </div>
         </div>
     </div>

@@ -5,8 +5,10 @@ from dotenv import load_dotenv
 
 from datetime import datetime
 
-from app.routes import auth_bp, dashboard_bp
+from app.routes import auth_bp, dashboard_bp, task_bp
 from app.models import User
+from app.enums import TaskStatus
+from app.helpers import get_task_status, show_task_status, get_task_status_color, encode
 
 import os
 
@@ -48,12 +50,17 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(task_bp)
 
     @app.context_processor
     def inject_config():
         return dict(
             config=app.config,
-            year=datetime.now().year
+            year=datetime.now().year,
+            TaskStatus=TaskStatus,
+            get_task_status=get_task_status,
+            get_task_status_color=get_task_status_color,
+            encode=encode
         )
 
     return app
