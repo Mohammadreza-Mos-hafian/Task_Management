@@ -1,0 +1,116 @@
+{% extends 'layouts/app.html' %}
+
+{% block title %}
+    Task edit
+{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="{{ url_for("static", filename="assets/css/air-datepicker.min.css") }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center mb-2">Edit Task:</h2>
+
+                <h4 class="text-center text-info">{{ task.title }}</h4>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endwith %}
+
+                <form
+                        action="{{ url_for("task.edit_view", id=encode(task.id)) }}"
+                        method="POST"
+                        class="card p-4 shadow-sm"
+                >
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label w-100">
+                            Title
+                            <input type="text" class="form-control" id="title" name="title"
+                                   value="{{ form.title.data or '' }}">
+
+                            {% for error in form.title.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="deadline" class="form-label w-100">
+                            deadline
+                            <input type="text" class="form-control" id="deadline" name="deadline"
+                                   placeholder="YYYY-MM-DD" value="{{ form.deadline.data or '' }}"
+                                   readonly>
+
+                            {% for error in form.deadline.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            {% for status in statuses %}
+                                <option value="{{ status.value }}"
+                                        {% if task.status == status.value %}
+                                        selected {% endif %}>{{ status.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        {% for error in form.status.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label w-100">
+                            Description
+                            <textarea class="form-control" id="description" name="description"
+                                      rows="4">{{ form.description.data or '' }}</textarea>
+
+                            {% for error in form.description.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Edit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for("static", filename="assets/js/jquery.js") }}"></script>
+    <script src="{{ url_for("static", filename="assets/js/air-datepicker.min.js") }}"></script>
+    <script>
+        new AirDatepicker('#deadline', {
+            autoClose: true,
+            position: 'bottom center',
+            isMobile: false,
+            timepicker: false,
+            inputFormat: 'yyyy-mm-dd',
+            locale: {
+                days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December'
+                ],
+                monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                today: 'Today',
+                clear: 'Clear',
+                dateFormat: 'yyyy-MM-dd',
+                firstDay: 0
+            }
+        });
+    </script>
+{% endblock %}

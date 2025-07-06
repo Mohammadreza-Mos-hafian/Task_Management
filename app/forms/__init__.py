@@ -1,2 +1,2 @@
 from .auth import RegisterForm, LoginForm
-from .task import CreateForm
+from .task import CreateForm, EditForm
