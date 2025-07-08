@@ -38,7 +38,7 @@
                             <a href="{{ url_for("task.delete_view", id=encode(task.id)) }}"
                                class="btn btn-danger btn-sm">Delete</a>
 
-                            <a href="#"
+                            <a href="{{ url_for("file.index_view", id=encode(task.id)) }}"
                                class="btn btn-secondary btn-sm">Files</a>
                         </td>
                     </tr>

@@ -20,6 +20,7 @@ class CreateView(MethodView):
             service = TaskServiceLayer(session_scope)
 
             service.create(
+                form=form,
                 title=form.title.data,
                 deadline=form.deadline.data,
                 description=form.description.data

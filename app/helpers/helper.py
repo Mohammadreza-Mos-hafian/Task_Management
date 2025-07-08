@@ -1,6 +1,9 @@
 from flask import current_app, abort
 from flask_mail import Mail, Message
+
 from itsdangerous import URLSafeSerializer
+
+from werkzeug.utils import secure_filename
 
 from sqlalchemy import desc, func
 from sqlalchemy.orm import Session
@@ -9,7 +12,7 @@ from enum import Enum
 
 from app.database import engine
 
-import socket
+import socket, os, uuid, magic
 
 
 def send_welcome_email(user_email: str):
@@ -103,3 +106,45 @@ def decode(param):
     except Exception as e:
         print(e)
         abort(404)
+
+
+def upload_files(form, task, model, upload_dir: str, session=Session(engine)):
+    if not form.files.data:
+        return None
+
+    for f in form.files.data:
+        f_bytes = f.read(2048)
+        f.seek(0)
+
+        mime = magic.from_buffer(f_bytes, mime=True)
+
+        allowed_types = [
+            "image/jpeg",
+            "image/png",
+            "image/jpg",
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"  # docx
+        ]
+
+        if mime not in allowed_types:
+            return False
+
+        filename = f"{uuid.uuid4().hex}_{secure_filename(f.filename)}"
+        original_name = os.path.splitext(secure_filename(f.filename))[0]
+        file_path = os.path.join(upload_dir, filename)
+
+        file_record = model(
+            file_path=file_path,
+            original_name=original_name
+        )
+
+        file_record.task = task
+
+        f.save(file_path)
+        session.add(file_record)
+
+    return True
+
+
+def get_files_directory(user_id: int, task_id: int):
+    return os.path.join(current_app.config["UPLOAD_FOLDER"], f"user_{user_id}/task_{task_id}")

@@ -1,0 +1,117 @@
+{% extends 'layouts/app.html' %}
+
+{% block title %}
+    Files
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">Task Files : <span class="text-primary fs-4">{{ task.title }}</span></h3>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <div class="card shadow-sm p-4">
+            <div class="d-flex justify-content-end align-items-center mb-1">
+                <a href="{{ url_for("task.index_view") }}" class="btn btn-secondary btn-sm">Back to
+                    tasks</a>
+            </div>
+
+            <table class="table table-striped text-center">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% if  files %}
+                    {% for file in files %}
+                        <tr>
+                            <td>{{ file.id }}</td>
+
+                            <td>{{ file.original_name }}</td>
+
+                            <td>
+                                <a href="{{ url_for("file.download_view", id=encode(file.id)) }}"
+                                   class="btn btn-success btn-sm">Download</a>
+
+                                <a href="{{ url_for("file.delete_view", id=encode(file.id)) }}"
+                                   class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-danger"> No files found</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+            <div>
+                <ul class="pagination justify-content-center">
+                    {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{{ url_for('file.index_view', id=encode(task.id), page=1) }}">&laquo;</a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{{ url_for('file.index_view', id=encode(task.id), page=page-1) }}">&lsaquo;</a>
+                        </li>
+                    {% endif %}
+
+                    {% for p in range(1, total_pages + 1) %}
+                        {% if p >= page - 1 and p <= page + 1 %}
+                            <li class="page-item {% if p == page %}active{% endif %}">
+                                <a class="page-link"
+                                   href="{{ url_for('file.index_view', id=encode(task.id), page=p) }}">{{ p }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{{ url_for("file.index_view", id=encode(task.id), page=page+1) }}">&rsaquo;</a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{{ url_for("file.index_view", id=encode(task.id), page=total_pages) }}">&raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex justify-content-center align-items-center mb-1">
+                    <h6 class="card-title">Add new files</h6>
+                </div>
+                <form
+                        method="POST"
+                        enctype="multipart/form-data"
+                        action="#"
+                        class="d-flex align-items-center"
+                >
+                    {{ form.hidden_tag() }}
+
+                    {{ form.files(class="form-control me-2", multiple=True) }}
+
+                    {{ form.submit(class="btn btn-primary") }}
+                </form>
+
+                {% for error in form.files.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

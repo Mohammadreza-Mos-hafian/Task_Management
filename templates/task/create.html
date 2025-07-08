@@ -21,7 +21,7 @@
                 {% endwith %}
 
                 <form
-                        action="#"
+                        action="{{ url_for("task.create_view") }}"
                         method="POST"
                         enctype="multipart/form-data"
                         class="card p-4 shadow-sm"
@@ -53,6 +53,17 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="files" class="form-label w-100">
+                            Files
+                            {{ form.files(class="form-control me-2", multiple=True) }}
+
+                            {% for error in form.files.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
 
                         <textarea class="form-control" id="description" name="description"
@@ -62,17 +73,6 @@
                             <span class="text-danger">{{ error }}</span>
                         {% endfor %}
                     </div>
-
-{#                    <div class="mb-3">#}
-{#                        <label for="files" class="form-label w-100">#}
-{#                            Files#}
-{#                            {{ form.files(class="form-control me-2", multiple=True) }}#}
-{##}
-{#                            {% for error in form.files.errors %}#}
-{#                                <span class="text-danger">{{ error }}</span>#}
-{#                            {% endfor %}#}
-{#                        </label>#}
-{#                    </div>#}
 
                     <button type="submit" class="btn btn-success w-100">Create</button>
                 </form>

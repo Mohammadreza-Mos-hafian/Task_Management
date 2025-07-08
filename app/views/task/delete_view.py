@@ -5,7 +5,7 @@ from app.database import session_scope
 from app.services import TaskServiceLayer
 
 
-class DeleteView(MethodView):
+class DeleteTaskView(MethodView):
     def get(self, id):
         service = TaskServiceLayer(session_scope)
         service.delete(id)
