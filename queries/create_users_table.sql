@@ -5,7 +5,6 @@ CREATE TABLE public.users
     last_name  character varying(32)       NOT NULL,
     email      character varying(64)       NOT NULL,
     password   character varying           NOT NULL,
-    is_admin   boolean                     NOT NULL DEFAULT FALSE,
     is_deleted boolean                     NOT NULL DEFAULT FALSE,
     created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
