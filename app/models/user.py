@@ -31,7 +31,6 @@ class User(Base, UserMixin):
     last_name: Mapped[str] = mapped_column(String(32))
     email: Mapped[str] = mapped_column(String(64))
     password: Mapped[str] = mapped_column(String)
-    is_admin: Mapped[bool] = mapped_column(Boolean, server_default=text('false'))
     is_deleted: Mapped[bool] = mapped_column(Boolean, server_default=text('false'))
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=text('CURRENT_TIMESTAMP'))
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=text('CURRENT_TIMESTAMP'),
