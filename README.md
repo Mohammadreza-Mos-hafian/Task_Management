@@ -5,7 +5,7 @@ This is my first project with flask.
 Features:\
     1. Authentication\
     2. Task CRUD\
-    3. Files Uplaod and Download Files
+    3. Upload and Download Files
 ## Installation
 
 Install my-project with pip
